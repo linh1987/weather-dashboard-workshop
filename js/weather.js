@@ -2,9 +2,8 @@
 var e = Inferno.createElement;
 
 var title = function (prop) {
-    return e('div', { className: "x_panel" },
-        e('div', { className: 'x_title' },
-            [
+    return e('div', { className: 'x_title' },
+        [
                 e('h2', {}, 'Daily active users',
                     e('small', {}, 'Sessions')
                 ),
@@ -33,14 +32,56 @@ var title = function (prop) {
                                 ),
                             ]
                         ),
+                        e('li', {},
+                            e('a', { className: 'close-link' }, 
+                                e('i', { className: 'fa fa-close' })
+                            )
+                        )
                     ]
                 ),
                 e('div', { className: 'clearfix' })
             ]
-        )
-    );
+        ) 
 };
 
+var weatherWidgetToday = function(prop) {
+    return e('div', { className: 'x_content'}, 
+        [
+            e('div', { className:'row' }, 
+                e('div', { className:'col-sm-12' }, 
+                    e('div', { className: 'temperature' }, Date())
+                )
+            ),
+            e('div', { className: 'row' },
+                [
+                    e('div', { className:'col-sm-4'},
+                        e('div', { className:'weather-icon'}, 
+                            e('canvas', { height: '84', width: '84', id: 'partly-cloudy-day'})
+                        )
+                    ),
+                    e('div', { className:'col-sm-8'},
+                        e('div', { className:'weather-text'}, 
+                            e('h2', {}, 
+                                [
+                                    data.name, 
+                                    e('br', {} ),
+                                    e('i', {}, 'Partly Cloudy Day'),
+                                ]
+                            )
+                                 
+                        )
+                    )
+                ]
+                
+            ),
+            e('div', { className:'col-sm-12' },   
+                e('div', { className: 'weather-text pull-right'}, 
+                    e('h3', { className: 'degrees'}, data.main.temp-280)
+                )
+            ),
+        ]
+    )
+};
 var body = function(prop) {
     
 }
@@ -49,7 +90,12 @@ var data = '';
 var weatherWidget = function (prop) {
     return e('div', { className: 'col-md-6 col-sm-6 col-xs-12' },
         [
-            e(title),
+            e('div', { className: "x_panel" },
+                [
+                    e(title),
+                    e(weatherWidgetToday),    
+                ]
+            ),            ,
             e('div', {}, data.weather[0].description)
         ]
     );
