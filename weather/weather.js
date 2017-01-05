@@ -136,7 +136,6 @@ Promise.all([
         const data = response.location;
         const forecast = response.forecast;
         const time = new Date();
-        console.log(response);
         render(data, time, forecast);
         //renderSkycons();
     });
