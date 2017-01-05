@@ -1,0 +1,24 @@
+{
+  "name": "weather-dashboard-workshop",
+  "version": "1.0.0",
+  "description": "\"# weather-dashboard-workshop\"",
+  "main": "index.html",
+  "scripts": {
+    "build": "babel weather -d dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/linh1987/weather-dashboard-workshop.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/linh1987/weather-dashboard-workshop/issues"
+  },
+  "homepage": "https://github.com/linh1987/weather-dashboard-workshop#readme",
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-inferno": "^1.3.0-beta17",
+    "babel-preset-env": "^1.1.4"
+  }
+}
