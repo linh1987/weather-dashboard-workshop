@@ -121,32 +121,17 @@ var WeatherWidget = (props) => {
     </div>);
 };
 
+var WeatherWidgetList = ({cities}) => {
+    return (<div>{
+        cities.map((city) => (
+            <WeatherWidget data={city.data} time={city.time} forecast={city.forecast} />
+        ))
+    }</div>);
+}
 
-var render = (data, time, forecast) => {
-    Inferno.render(<WeatherWidget data={data} time={time} forecast={forecast} />,
+var render = (cityList) => {
+    Inferno.render(<WeatherWidgetList cities={cityList.cities} />,
         document.getElementById('weather-widget')
     );
 };
 
-Promise.all([
-    fetch('http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=41b32fae514addfcf8e801412ae4c88c').then((response) => response.json()),
-    fetch('http://api.openweathermap.org/data/2.5/forecast/daily?q=hanoi&appid=41b32fae514addfcf8e801412ae4c88c').then((response) => response.json())
-]).then(([location, forecast]) => { return { location, forecast }; })
-    .then(function (response) {
-        const data = response.location;
-        const forecast = response.forecast;
-        const time = new Date();
-        render(data, time, forecast);
-        //renderSkycons();
-    });
-
-
-// fetch('http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=41b32fae514addfcf8e801412ae4c88c')
-//     .then(function (response) {
-//         return response.json();
-//     }).then(function (response) {
-//         const data = response;
-//         const time = new Date();
-//         render(data, time);
-//         renderSkycons();
-//     });

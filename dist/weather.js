@@ -1,7 +1,5 @@
 'use strict';
 
-var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"]) _i["return"](); } finally { if (_d) throw _e; } } return _arr; } return function (arr, i) { if (Array.isArray(arr)) { return arr; } else if (Symbol.iterator in Object(arr)) { return sliceIterator(arr, i); } else { throw new TypeError("Invalid attempt to destructure non-iterable instance"); } }; }();
-
 var createVNode = Inferno.createVNode;
 var Title = function Title(prop) {
     return createVNode(2, 'div', {
@@ -137,39 +135,20 @@ var WeatherWidget = function WeatherWidget(props) {
     })]));
 };
 
-var render = function render(data, time, forecast) {
-    Inferno.render(createVNode(16, WeatherWidget, {
-        'data': data,
-        'time': time,
-        'forecast': forecast
-    }), document.getElementById('weather-widget'));
+var WeatherWidgetList = function WeatherWidgetList(_ref3) {
+    var cities = _ref3.cities;
+
+    return createVNode(2, 'div', null, cities.map(function (city) {
+        return createVNode(16, WeatherWidget, {
+            'data': city.data,
+            'time': city.time,
+            'forecast': city.forecast
+        });
+    }));
 };
 
-Promise.all([fetch('http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=41b32fae514addfcf8e801412ae4c88c').then(function (response) {
-    return response.json();
-}), fetch('http://api.openweathermap.org/data/2.5/forecast/daily?q=hanoi&appid=41b32fae514addfcf8e801412ae4c88c').then(function (response) {
-    return response.json();
-})]).then(function (_ref3) {
-    var _ref4 = _slicedToArray(_ref3, 2),
-        location = _ref4[0],
-        forecast = _ref4[1];
-
-    return { location: location, forecast: forecast };
-}).then(function (response) {
-    var data = response.location;
-    var forecast = response.forecast;
-    var time = new Date();
-    console.log(response);
-    render(data, time, forecast);
-    //renderSkycons();
-});
-
-// fetch('http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=41b32fae514addfcf8e801412ae4c88c')
-//     .then(function (response) {
-//         return response.json();
-//     }).then(function (response) {
-//         const data = response;
-//         const time = new Date();
-//         render(data, time);
-//         renderSkycons();
-//     });
+var render = function render(cityList) {
+    Inferno.render(createVNode(16, WeatherWidgetList, {
+        'cities': cityList.cities
+    }), document.getElementById('weather-widget'));
+};
