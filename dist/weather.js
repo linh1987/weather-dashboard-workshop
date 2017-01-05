@@ -25,7 +25,9 @@ var Title = function Title(prop) {
     })), createVNode(2, 'ul', {
         'className': 'dropdown-menu',
         'role': 'menu'
-    }, ['[1, 2, 3].map( => (', createVNode(2, 'li', null, '\'test\''), '));'])]), createVNode(2, 'li', null, createVNode(2, 'a', {
+    }, [1, 2, 3].map(function () {
+        return createVNode(2, 'li', null, '\'test\'');
+    }))]), createVNode(2, 'li', null, createVNode(2, 'a', {
         'className': 'close-link'
     }, createVNode(2, 'i', {
         'className': 'fa fa-close'
@@ -34,6 +36,7 @@ var Title = function Title(prop) {
     })]);
 };
 
+var text = "aaaa";
 var WeatherWidgetToday = function WeatherWidgetToday(prop) {
     return createVNode(2, 'div', {
         'className': 'x_content'
@@ -43,7 +46,7 @@ var WeatherWidgetToday = function WeatherWidgetToday(prop) {
         'className': 'col-sm-12'
     }, createVNode(2, 'div', {
         'className': 'temperature'
-    }, 'Date()'))), createVNode(2, 'div', {
+    }))), createVNode(2, 'div', {
         'className': 'row'
     }, [createVNode(2, 'div', {
         'className': 'col-sm-4'
@@ -57,13 +60,13 @@ var WeatherWidgetToday = function WeatherWidgetToday(prop) {
         'className': 'col-sm-8'
     }, createVNode(2, 'div', {
         'className': 'weather-text'
-    }, createVNode(2, 'h2', null, ['// data.name', createVNode(2, 'br'), createVNode(2, 'i', null, 'Partly Cloudy Day')]))), createVNode(2, 'div', {
+    }, createVNode(2, 'h2', null, [data.city.name, createVNode(2, 'br'), createVNode(2, 'i', null, 'Partly Cloudy Day')]))), createVNode(2, 'div', {
         'className': 'col-sm-12'
     }, createVNode(2, 'div', {
         'className': 'weather-text pull-right'
     }, createVNode(2, 'h3', {
         'className': 'degrees'
-    }, 'data.main.temp-280')))])]);
+    }, Math.round(data.list[0].temp.day - 280))))])]);
 };
 
 var body = function body(prop) {};
@@ -72,7 +75,7 @@ var data = '';
 var WeatherWidget = function WeatherWidget(prop) {
     return createVNode(2, 'div', {
         'className': 'col-md-6 col-sm-6 col-xs-12'
-    }, [createVNode(2, 'div', null, 'aaaaa'), createVNode(16, Title), createVNode(16, WeatherWidgetToday)]);
+    }, [createVNode(2, 'div', null, text), createVNode(16, Title), createVNode(16, WeatherWidgetToday)]);
 };
 
 var render = function render() {

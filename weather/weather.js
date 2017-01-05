@@ -27,7 +27,7 @@ var Title = function (prop) {
                             <i className= 'fa fa-wrench' ></i>
                         </a>
                         <ul className= "dropdown-menu" role= 'menu' >
-                            [1, 2, 3].map( => (<li>'test'</li>));
+                            {[1, 2, 3].map( () => (<li>'test'</li>))}
                         </ul>
                     </li>
                 <li>
@@ -41,12 +41,13 @@ var Title = function (prop) {
     )
 };
 
+var text = "aaaa";
 var WeatherWidgetToday = function(prop) {
     return (
         <div className= 'x_content'> 
             <div className='row' > 
                 <div className='col-sm-12' > 
-                    <div className= 'temperature' >Date()</div>
+                    <div className= 'temperature' ></div>
                 </div>
             </div>
             <div className= 'row' >
@@ -58,7 +59,7 @@ var WeatherWidgetToday = function(prop) {
                 <div className='col-sm-8'>
                     <div className='weather-text'> 
                         <h2> 
-                            // data.name
+                            {data.city.name}
                             <br/>
                             <i>Partly Cloudy Day</i>
                         </h2>
@@ -66,7 +67,7 @@ var WeatherWidgetToday = function(prop) {
                 </div>
                 <div className='col-sm-12' >   
                     <div className= 'weather-text pull-right'> 
-                        <h3 className= 'degrees'>data.main.temp-280</h3>
+                        <h3 className= 'degrees'>{Math.round(data.list[0].temp.day-280)}</h3>
                     </div>
                 </div>
             </div>
@@ -82,7 +83,7 @@ var data = '';
 var WeatherWidget = function (prop) {
     return (
         <div className = 'col-md-6 col-sm-6 col-xs-12'> 
-            <div>aaaaa</div>
+            <div>{text}</div>
             <Title />
             <WeatherWidgetToday />
         </div>
