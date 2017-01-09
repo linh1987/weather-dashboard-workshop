@@ -134,21 +134,37 @@ var WeatherWidget = function WeatherWidget(props) {
         'forecast': props.forecast
     })]));
 };
+var WeatherWidgetToolbar = function WeatherWidgetToolbar(_ref3) {
+    var actions = _ref3.actions;
 
-var WeatherWidgetList = function WeatherWidgetList(_ref3) {
-    var cities = _ref3.cities;
+    return createVNode(2, 'div', {
+        'className': 'row'
+    }, createVNode(2, 'div', {
+        'className': 'col-xs-12'
+    }, [createVNode(2, 'label', null, 'City Name'), createVNode(512, 'input', {
+        'type': 'text'
+    }), createVNode(2, 'button', null, 'Add City'), createVNode(2, 'button', null, 'Remove City'), createVNode(2, 'button', null, 'Remove Last City', {
+        'onClick': actions.removeLastCity
+    }), createVNode(2, 'button', null, 'Refresh')]));
+};
+var WeatherWidgetList = function WeatherWidgetList(_ref4) {
+    var cities = _ref4.cities,
+        actions = _ref4.actions;
 
-    return createVNode(2, 'div', null, cities.map(function (city) {
+    return createVNode(2, 'div', null, [createVNode(16, WeatherWidgetToolbar, {
+        'actions': actions
+    }), cities.map(function (city) {
         return createVNode(16, WeatherWidget, {
             'data': city.data,
             'time': city.time,
             'forecast': city.forecast
         });
-    }));
+    })]);
 };
 
 var render = function render(cityList) {
     Inferno.render(createVNode(16, WeatherWidgetList, {
+        'actions': cityList.actions,
         'cities': cityList.cities
     }), document.getElementById('weather-widget'));
 };

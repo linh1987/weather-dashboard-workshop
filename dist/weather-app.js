@@ -18,17 +18,57 @@ function queryCityData(cityName) {
     });
 }
 
-Promise.all(cities.map(function (cityName) {
-    return queryCityData(cityName);
-})).then(function (values) {
-    var cityList = {
-        cities: values.map(function (value) {
-            return {
-                data: value.location,
-                forecast: value.forecast,
-                time: new Date()
-            };
-        })
-    };
-    render(cityList);
-});
+function updateCities() {
+    Promise.all(cities.map(function (cityName) {
+        return queryCityData(cityName);
+    })).then(function (values) {
+        var cityList = {
+            cities: values.map(function (value) {
+                return {
+                    data: value.location,
+                    forecast: value.forecast,
+                    time: new Date()
+                };
+            }),
+            actions: {
+                addCity: addCity,
+                removeFirstCity: removeFirstCity,
+                removeLastCity: removeLastCity,
+                removeCity: removeCity,
+                refresh: refresh
+            }
+        };
+        render(cityList);
+    });
+}
+
+updateCities();
+
+function addCity(cityName) {
+    cities.push(cityName);
+    updateCities();
+}
+
+function removeFirstCity() {
+    //do your shit
+    updateCities();
+}
+
+function removeLastCity() {
+    cities.pop();
+    updateCities();
+}
+
+function removeCity(cityName) {
+    //do you shit here
+    updateCities();
+}
+
+function clearAll() {
+    //do you shit here
+    updateCities();
+}
+
+function refresh() {
+    updateCities();
+}

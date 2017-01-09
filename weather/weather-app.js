@@ -11,16 +11,57 @@ function queryCityData(cityName) {
     });
 }
 
-Promise.all(cities.map((cityName) => queryCityData(cityName)))
-    .then((values) => {
-        const cityList = {
-            cities: values.map((value) => {
-                return {
-                    data: value.location,
-                    forecast: value.forecast,
-                    time: new Date()
-                };
-            })
-        };
-        render(cityList);
-    });
+function updateCities() {
+    Promise.all(cities.map((cityName) => queryCityData(cityName)))
+        .then((values) => {
+            const cityList = {
+                cities: values.map((value) => {
+                    return {
+                        data: value.location,
+                        forecast: value.forecast,
+                        time: new Date()
+                    };
+                }), 
+                actions: {
+                    addCity,
+                    removeFirstCity,
+                    removeLastCity,
+                    removeCity,
+                    refresh
+                }
+            };
+            render(cityList);
+        });
+}
+
+updateCities();
+
+function addCity(cityName) {
+    cities.push(cityName);
+    updateCities();
+}
+
+function removeFirstCity() {
+    //do your shit
+    updateCities();
+}
+
+function removeLastCity() {
+    cities.pop();
+    updateCities();
+}
+
+function removeCity(cityName) {
+    //do you shit here
+    updateCities();
+}
+
+function clearAll() {
+    //do you shit here
+    updateCities();
+}
+
+function refresh() {
+    updateCities();
+}
+
