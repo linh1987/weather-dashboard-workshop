@@ -162,9 +162,9 @@ var WeatherWidgetList = function WeatherWidgetList(_ref4) {
     })]);
 };
 
-var render = function render(cityList) {
+var render = function render(weatherData) {
     Inferno.render(createVNode(16, WeatherWidgetList, {
-        'actions': cityList.actions,
-        'cities': cityList.cities
+        'actions': weatherData.actions,
+        'cities': weatherData.cities
     }), document.getElementById('weather-widget'));
 };
