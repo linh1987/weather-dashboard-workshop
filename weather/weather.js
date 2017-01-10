@@ -133,13 +133,21 @@ var WeatherWidgetToolbar = ({actions}) => {
     </div>);
 }
 var WeatherWidgetList = ({cities, actions}) => {
-    return (<div>
-    <WeatherWidgetToolbar actions={actions} />
-    {
-        cities.map((city) => (
-            <WeatherWidget data={city.data} time={city.time} forecast={city.forecast} />
-        ))
-    }</div>);
+    let cityHaveData = cities.filter((city) => !!city.data);
+    console.log(cityHaveData);
+    if(!cityHaveData)
+        return null;
+
+    return (
+        <div>
+            <WeatherWidgetToolbar actions={actions} />
+            {
+                cityHaveData.map((city) => (
+                    <WeatherWidget data={city.data} time={city.time} forecast={city.forecast} />
+                ))
+            }
+        </div>
+    );
 }
 
 var render = (weatherData) => {

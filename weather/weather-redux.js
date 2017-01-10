@@ -8,27 +8,6 @@ const dummyForeCast = {
 const dummyTime = "2017-01-09T05:10:19.367Z";
 
 
-// ACTION TYPES
-const ADD_CITY = "ADD_CITY";
-const REMOVE_LAST_CITY = "REMOVE_LAST_CITY";
-
-// action creators
-function createAddCityAction(cityName, data, forecast, time) {
-    return {
-        type: ADD_CITY,
-        cityName: cityName,
-        data,
-        forecast,
-        time
-    };
-}
-
-function createRemoveLastCityAction() {
-    return {
-        type: REMOVE_LAST_CITY
-    }
-}
-
 // reducer
 function weatherWidgetReducer(state = {
     cities: [
@@ -45,10 +24,19 @@ function weatherWidgetReducer(state = {
     switch (action.type) {
         case ADD_CITY:
             newState.cities.push({ 
-                name: action.cityName, 
+                name: action.name, 
                 data: action.data, 
                 forecast: action.forecast, 
                 time: action.time 
+            });
+            return newState;
+        case UPDATE_CITY:
+            newState.cities.forEach((city) => {
+                if(city.name === action.name) {
+                    city.data = action.data;
+                    city.forecast = action.forecast;
+                    city.time = action.time;
+                }
             });
             return newState;
         case REMOVE_LAST_CITY:
@@ -61,19 +49,45 @@ function weatherWidgetReducer(state = {
     }
 }
 
+// utils
+
+function queryCityData(cityName) {
+    return Promise.all([
+        fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=41b32fae514addfcf8e801412ae4c88c`)
+            .then((response) => response.json()),
+        fetch(`http://api.openweathermap.org/data/2.5/forecast/daily?q=${cityName}&appid=41b32fae514addfcf8e801412ae4c88c`)
+            .then((response) => response.json())
+    ]).then(([location, forecast]) => {
+        return { location, forecast };
+    });
+}
+
 // store
 let weatherStore = Redux.createStore(weatherWidgetReducer);
 
+// render widget
 weatherStore.subscribe(() => {
-        console.log(JSON.stringify(weatherStore.getState()));
-        render(weatherStore.getState());
-    }
-)
+    render(weatherStore.getState());
+});
 
-weatherStore.dispatch(createAddCityAction('Hanoi', dummyData, dummyForeCast, dummyTime))
+// get data of weather for new city
+weatherStore.subscribe(() => {
+    let currentState = weatherStore.getState();
+    currentState.cities.forEach((city) => {
+        console.log('query weather data');
+        console.log(city);
+        if(!city.data) {
+            queryCityData(city.name).then(({location, forecast}) => {
+                weatherStore.dispatch(updateCityAction(city.name, location, forecast, dummyTime));
+            });
+        }
+    });
+});
 
-weatherStore.dispatch(createAddCityAction('Venice', dummyData, dummyForeCast, dummyTime))
+weatherStore.dispatch(createAddCityAction('Hanoi'));
 
-weatherStore.dispatch(createAddCityAction('Rome', dummyData, dummyForeCast, dummyTime))
+// weatherStore.dispatch(createAddCityAction('Venice'));
 
-weatherStore.dispatch(createRemoveLastCityAction())
+// k.dispatch(createAddCityAction('Rome', dummyData, dummyForeCast, dummyTime))
+
+// weatherStore.dispatch(createRemoveLastCityAction())
