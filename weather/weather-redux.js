@@ -10,6 +10,9 @@ const dummyTime = "2017-01-09T05:10:19.367Z";
 
 // connector
 function addCityConnector(cityName) {
+    if(!cityName) {
+        return createAddEmptyCity();
+    }
     return dispatch => {
         queryCityData(cityName).then(({location, forecast}) => {
             dispatch(createAddCityAction(cityName, location, forecast, dummyTime));
@@ -21,23 +24,28 @@ function addCityConnector(cityName) {
 function weatherWidgetReducer(state = {
     cities: [
     ],
+    lastCity: "",
     actions: {
-        addCity: () => { },
+        addCity: (cityName) => { weatherStore.dispatch(addCityConnector(cityName));},
         removeFirstCity: () => { },
-        removeLastCity: () => { },
-        removeCity: () => { },
+        removeLastCity: () => { weatherStore.dispatch(createRemoveLastCityAction()); },
+        updateLastCity: (cityName) => { weatherStore.dispatch(createUpdateLastCity(cityName));},
         refresh: () => { }
     }
 }, action) {
     const newState = state;
     switch (action.type) {
         case ADD_CITY:
-            newState.cities.push({ 
-                name: action.name, 
-                data: action.data, 
-                forecast: action.forecast, 
-                time: action.time 
-            });
+            if(action.name) {
+                newState.cities.push({ 
+                    name: action.name, 
+                    data: action.data, 
+                    forecast: action.forecast, 
+                    time: action.time 
+                });
+                newState.lastCity = "";
+            }
+            
             return newState;
         case UPDATE_CITY:
             newState.cities.forEach((city) => {
@@ -53,6 +61,9 @@ function weatherWidgetReducer(state = {
                 newState.cities.pop();
             }
             return newState;
+        case UPDATE_LAST_CITY:
+            newState.lastCity = action.cityName;
+            return newState;
         default:
             return state;
     }
@@ -62,9 +73,9 @@ function weatherWidgetReducer(state = {
 
 function queryCityData(cityName) {
     return Promise.all([
-        fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=41b32fae514addfcf8e801412ae4c88c`)
+        fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=46d6aa5f80a6f0228fe86c56173d740d`)
             .then((response) => response.json()),
-        fetch(`http://api.openweathermap.org/data/2.5/forecast/daily?q=${cityName}&appid=41b32fae514addfcf8e801412ae4c88c`)
+        fetch(`http://api.openweathermap.org/data/2.5/forecast/daily?q=${cityName}&appid=46d6aa5f80a6f0228fe86c56173d740d`)
             .then((response) => response.json())
     ]).then(([location, forecast]) => {
         return { location, forecast };
