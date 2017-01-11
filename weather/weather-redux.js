@@ -8,6 +8,15 @@ const dummyForeCast = {
 const dummyTime = "2017-01-09T05:10:19.367Z";
 
 
+// connector
+function addCityConnector(cityName) {
+    return dispatch => {
+        queryCityData(cityName).then(({location, forecast}) => {
+            dispatch(createAddCityAction(cityName, location, forecast, dummyTime));
+        });
+    };
+}
+
 // reducer
 function weatherWidgetReducer(state = {
     cities: [
@@ -62,8 +71,11 @@ function queryCityData(cityName) {
     });
 }
 
+// thunk
+let reduxThunk = ReduxThunk.default;
+
 // store
-let weatherStore = Redux.createStore(weatherWidgetReducer);
+let weatherStore = Redux.createStore(weatherWidgetReducer, Redux.applyMiddleware(reduxThunk));
 
 // render widget
 weatherStore.subscribe(() => {
@@ -71,20 +83,22 @@ weatherStore.subscribe(() => {
 });
 
 // get data of weather for new city
-weatherStore.subscribe(() => {
-    let currentState = weatherStore.getState();
-    currentState.cities.forEach((city) => {
-        console.log('query weather data');
-        console.log(city);
-        if(!city.data) {
-            queryCityData(city.name).then(({location, forecast}) => {
-                weatherStore.dispatch(updateCityAction(city.name, location, forecast, dummyTime));
-            });
-        }
-    });
-});
+// weatherStore.subscribe(() => {
+//     let currentState = weatherStore.getState();
+//     currentState.cities.forEach((city) => {
+//         console.log('query weather data');
+//         console.log(city);
+//         if(!city.data) {
+//             queryCityData(city.name).then(({location, forecast}) => {
+//                 weatherStore.dispatch(updateCityAction(city.name, location, forecast, dummyTime));
+//             });
+//         }
+//     });
+// });
 
-weatherStore.dispatch(createAddCityAction('Hanoi'));
+weatherStore.dispatch(addCityConnector("Hanoi"));
+
+// weatherStore.dispatch(createAddCityAction('Hanoi'));
 
 // weatherStore.dispatch(createAddCityAction('Venice'));
 
