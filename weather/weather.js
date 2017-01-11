@@ -125,7 +125,7 @@ var WeatherWidgetToolbar = ({actions}) => {
         <div className="col-xs-12">
             <label>City Name</label>
             <input type="text" />
-            <button>Add City</button>
+            <button onClick={actions.addCity}>Add City</button>
             <button>Remove City</button>
             <button onClick={actions.removeLastCity}>Remove Last City</button>
             <button>Refresh</button>
@@ -136,7 +136,7 @@ var WeatherWidgetList = ({cities, actions}) => {
     return (<div>
     <WeatherWidgetToolbar actions={actions} />
     {
-        cities.map((city) => (
+        cities.filter((city) => !!city.data).map((city) => (
             <WeatherWidget data={city.data} time={city.time} forecast={city.forecast} />
         ))
     }</div>);
