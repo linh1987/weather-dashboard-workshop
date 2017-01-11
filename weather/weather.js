@@ -120,21 +120,22 @@ var WeatherWidget = (props) => {
         </div>
     </div>);
 };
-var WeatherWidgetToolbar = ({actions}) => {
+var WeatherWidgetToolbar = ({actions, lastCity}) => {
     return (<div className="row">
         <div className="col-xs-12">
             <label>City Name</label>
-            <input type="text" />
-            <button onClick={actions.addCity}>Add City</button>
-            <button>Remove City</button>
+            <input onInput={(e) => actions.updateLastCity(e.target.value)} type="text" value={lastCity} />
+            <button onClick={() => actions.addCity(lastCity)}>Add City</button>
+            <button onClick={() => actions.removeCity(lastCity) }>Remove City</button>
             <button onClick={actions.removeLastCity}>Remove Last City</button>
-            <button>Refresh</button>
+            <button>{lastCity}</button>
         </div>
     </div>);
 }
-var WeatherWidgetList = ({cities, actions}) => {
+
+var WeatherWidgetList = ({cities, actions, lastCity}) => {
     return (<div>
-    <WeatherWidgetToolbar actions={actions} />
+    <WeatherWidgetToolbar actions={actions} lastCity={lastCity} />
     {
         cities.filter((city) => !!city.data).map((city) => (
             <WeatherWidget data={city.data} time={city.time} forecast={city.forecast} />
@@ -143,7 +144,7 @@ var WeatherWidgetList = ({cities, actions}) => {
 }
 
 var render = (weatherData) => {
-    Inferno.render(<WeatherWidgetList actions={weatherData.actions} cities={weatherData.cities} />,
+    Inferno.render(<WeatherWidgetList actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
         document.getElementById('weather-widget')
     );
 };
