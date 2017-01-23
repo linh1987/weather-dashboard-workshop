@@ -1,79 +1,55 @@
-var Title = function (prop) {
-    return (<div className='x_title'>
-        <h2>
-            Daily active users <small>Sessions</small>
-        </h2>
-        <ul className='nav navbar-right panel_toolbox'>
-            <li>
-                <a className="collapse-link"><i className="fa fa-chevron-up" /></a>
-            </li>
-            <li className="dropdown">
-                <a href='index.html'
-                    className='dropdown-toggle'
-                    data-toggle='dropdown'
-                    role='button'
-                    area-expanded='false'>
-                    <i className="fa fa-wrench" />
-                </a>
-                <ul className="dropdown-menu" role="menu">
-                    {
-                        [1, 2, 3].map(() => <li>test</li>)
-                    }
-                </ul>
-            </li>
-        </ul>
-        <div className='clearfix' />
-    </div>);
-};
 
-var TimeComponent = function (prop) {
-    return (<div className="col-sm-12">
-        <div className="temperature">
-            <b>{prop.time && prop.time.getDay && prop.time.getDay()}</b>,{prop.time && prop.time.toString && prop.time.toString()}
+Vue.component('TimeComponent', {
+    props: ['time'],
+    template: `<div class="col-sm-12">
+        <div class="temperature">
+            <b>{{ time && time.getDay && time.getDay()}}</b>, {{time && time.toString && time.toString()}}
         </div>
-    </div>);
-}
+    </div>`
+})
 
-var getWeatherId = function (weather) {
-    if (weather === 'clear sky')
-        return 'clear-day';
-    return weather.replace(' ', '-');
-}
-
-var WeatherIconComponent = function (prop) {
-    return (<div className='col-sm-4'>
-        <div className='weather-icon'>
-            <canvas height="84" width="84" id={getWeatherId(prop.data.weather[0].description)} />
+Vue.component('WeatherIconComponent', {
+    props: ['data'],
+    template: `<div class='col-sm-4'>
+        <div class='weather-icon'>
+            <canvas height="84" width="84" id="clear-day" />
         </div>
-    </div>);
-}
+    </div>)`,
+});
 
-var WeatherText = function (prop) {
-    return (<div className='col-sm-8'>
-        <div className="weather-text">
+Vue.component('WeatherText', {
+    props: ['data'],
+    template: `<div class='col-sm-8'>
+        <div class="weather-text">
             <h2>
-                {prop.data.name} <br /> <i>{prop.data.weather[0].description}</i>
+                {{data.name}} <br /> <i>{{data.weather[0].description}}</i>
             </h2>
         </div>
-    </div>);
-}
+    </div>`
+});
 
 function convertFromKtoC(kTemp) {
     return kTemp - 273.15;
 }
 
 
-var WeatherDegree = function ({data}) {
-    return (<div className='weather-text pull-right'>
-        <h3 className='degrees'>
-            {convertFromKtoC(data.main.temp)}
+Vue.component('WeatherDegree', {
+    props: ['data'],
+    template: `<div class='weather-text pull-right'>
+        <h3 class='degrees'>
+            {{ CelsiusDegree }}
         </h3>
-    </div>
-    );
-}
+    </div>`,
+    computed: {
+        CelsiusDegree: function() {
+            return convertFromKtoC(this.data.main.temp);
+        }
+    }
+});
 
-var ForecastDay = ({dayforecast}) => {
-    return (
+Vue.component('ForecastDay', {
+    props: ['data'],
+    template: `
         <div class="col-sm-2">
             <div class="daily-weather">
                 <h2 class="day">Mon</h2>
@@ -82,70 +58,102 @@ var ForecastDay = ({dayforecast}) => {
                 <h5>15 <i>km/h</i></h5>
             </div>
         </div>
-    )
-}
+    `
+});
 
+Vue.component('Title', {
+    template: `<div class='x_title'>
+        <h2>
+            Daily active users <small>Sessions</small>
+        </h2>
+        <ul class='nav navbar-right panel_toolbox'>
+            <li>
+                <a class="collapse-link"><i class="fa fa-chevron-up" /></a>
+            </li>
+            <li class="dropdown">
+                <a href='index.html'
+                    class='dropdown-toggle'
+                    data-toggle='dropdown'
+                    role='button'
+                    area-expanded='false'>
+                    <i class="fa fa-wrench" />
+                </a>
+                <ul class="dropdown-menu" role="menu">
+                    <li>test</li>
+                </ul>
+            </li>
+        </ul>
+        <div class='clearfix' />
+    </div>`
+});
 
-var Body = (props) => {
-    return (
-        <div className='x_content'>
-            <div className='row'>
-                <TimeComponent time={props.time} />
+Vue.component('Body', {
+    props: ['location', 'forecast', 'time'],
+    template:`<div class='x_content'>
+            <div class='row'>
+                <TimeComponent v-bind:time="time" />
             </div>
-            <div className='row'>
-                <WeatherIconComponent data={props.data} />
-                <WeatherText data={props.data} />
+            <div class='row'>
+                <WeatherIconComponent v-bind:data="location" />
+                <WeatherText v-bind:data="location" />
             </div>
-            <div className='row'>
-                <WeatherDegree data={props.data} />
+            <div class='row'>
+                <WeatherDegree v-bind:data="location" />
             </div>
-            <div className='clearfix'>
+            <div class='clearfix'>
             </div>
-            <div className='row weather-days'>
-                {
-                    props.forecast.list.map((dayData) => (<ForecastDay dayforecast={dayData} />))
-                }
+            <div class='row weather-days'>
+                <ForecastDay v-for="dayData in forecast.list" v-bind:dayforecast="dayData" />
             </div>
-        </div>
-    );
-}
+        </div>`
+})
 
-
-
-var WeatherWidget = (props) => {
-    return (<div className='col-md-6 col-sm-6 col-xs-12'>
-        <div className='x_panel'>
+Vue.component('WeatherWidget', {
+    props: ['city'],
+    template: `div class='col-md-6 col-sm-6 col-xs-12'>
+        <div class='x_panel'>
             <Title />
-            <Body data={props.data} time={props.time} forecast={props.forecast} />
+            <Body v-bind:location="city.location" v-bind:time="city.time" v-bind:forecast="city.forecast" />
         </div>
-    </div>);
-};
-var WeatherWidgetToolbar = ({actions, lastCity}) => {
-    return (<div className="row">
-        <div className="col-xs-12">
-            <label>City Name</label>
-            <input onInput={(e) => actions.updateLastCity(e.target.value)} type="text" value={lastCity} />
-            <button onClick={() => actions.addCity(lastCity)}>Add City</button>
-            <button onClick={() => actions.removeCity(lastCity) }>Remove City</button>
-            <button onClick={actions.removeLastCity}>Remove Last City</button>
-            <button>{lastCity}</button>
-        </div>
-    </div>);
+    </div>`
+})
+
+Vue.component('WeatherWidgetList', {
+    props: ['cities'],
+    template: `
+        <div>
+            <WeatherWidget v-for="city in cities" v-bind:city="city"></WeatherWidget>
+        </div>`
+})
+
+
+function queryCityData(cityName) {
+    return Promise.all([
+        fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=46d6aa5f80a6f0228fe86c56173d740d`)
+            .then((response) => response.json()),
+        fetch(`http://api.openweathermap.org/data/2.5/forecast/daily?q=${cityName}&appid=46d6aa5f80a6f0228fe86c56173d740d`)
+            .then((response) => response.json())
+    ]).then(([location, forecast]) => {
+        return { location, forecast };
+    });
 }
 
-var WeatherWidgetList = ({cities, actions, lastCity}) => {
-    return (<div>
-    <WeatherWidgetToolbar actions={actions} lastCity={lastCity} />
-    {
-        cities.filter((city) => !!city.data).map((city) => (
-            <WeatherWidget data={city.data} time={city.time} forecast={city.forecast} />
-        ))
-    }</div>);
-}
-
-var render = (weatherData) => {
-    Inferno.render(<WeatherWidgetList actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
-        document.getElementById('weather-widget')
-    );
-};
-
+queryCityData('Hanoi').then(({location, forecast}) => {
+    var vueApp = new Vue({
+        el: '#weather-widget',
+        template: `
+            <div>
+                <WeatherWidgetList v-bind:cities="cities"></WeatherWidgetList>
+            </div>`,
+        data: {
+            cities: [
+                {
+                    cityName: 'Hanoi',
+                    location,
+                    forecast,
+                    time: new Date()
+                }
+            ]
+        },
+    })
+})
