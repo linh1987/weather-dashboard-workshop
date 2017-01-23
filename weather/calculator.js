@@ -1,25 +1,24 @@
-const createModuleFactory = (coreFunction) => {
-    function createMiddlewareCaller(req, res, middlewareStack) {
-        const currentFunction = middlewareStack[0];
 
-        if (!currentFunction) {
-            return () => { };
-        }
+function createMiddlewareCaller(req, res, middlewareStack) {
+    const currentFunction = middlewareStack[0];
 
-        const nextStack = middlewareStack.slice(1);
-
-        return () => currentFunction(req, res, () => { createMiddlewareCaller(req, res, nextStack)(); });
+    if (!currentFunction) {
+        return () => { };
     }
 
-    return (middlewares) => {
-        return {
-            process: (req) => {
-                const res = {};
+    const nextStack = middlewareStack.slice(1);
 
-                createMiddlewareCaller(req, res, (middlewares || []).concat([coreFunction]))();
+    return () => currentFunction(req, res, () => { createMiddlewareCaller(req, res, nextStack)(); });
+}
 
-                return res;
-            }
+const createModuleFactory = (coreFunction) => (middlewares) => {
+    return {
+        process: (req) => {
+            const res = {};
+
+            createMiddlewareCaller(req, res, (middlewares || []).concat([coreFunction]))();
+
+            return res;
         }
     }
 }
@@ -112,10 +111,10 @@ const helloer = createHelloer([
 console.log(calculator.process({ operator: "+", number1: 1, number2: 10 }));
 console.log(calculator.process({ operator: "*", number1: 9, number2: 9 }));
 helloer.process({ name: "Vu" })
-helloer.process({ name:"Thanh"})
+helloer.process({ name: "Thanh" })
 
 
 helloer.process(
     fetch(`http://api.openweathermap.org/data/2.5/weather?q=Hanoi&appid=46d6aa5f80a6f0228fe86c56173d740d`)
-            .then((response) => response.json())
+        .then((response) => response.json())
 )
