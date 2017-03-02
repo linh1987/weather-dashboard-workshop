@@ -1,8 +1,9 @@
+import * as actions from './weather-actions.js'; 
 
 // action creators
-function createAddCityAction(cityName, data, forecast, time) {
+export function createAddCityAction(cityName, data, forecast, time) {
     return {
-        type: ADD_CITY,
+        type: actions.ADD_CITY,
         cityName: cityName,
         data, 
         forecast, 
@@ -10,38 +11,28 @@ function createAddCityAction(cityName, data, forecast, time) {
     };
 }
 
-function createUpdateLastCityAction(cityName) {
+export function createUpdateLastCityAction(cityName) {
     return {
-        type: UPDATE_LAST_CITY, 
+        type: actions.UPDATE_LAST_CITY, 
         cityName
     }
 }
 
-// function createUpdateCityDataAction(cityName, data, forecast, time) {
-//     return {
-//         type: UPDATE_CITY_DATA,
-//         cityName: cityName,
-//         data, 
-//         forecast, 
-//         time,
-//     };
-// }
-
-function createRemoveLastCityAction() {
+export function createRemoveLastCityAction() {
     return {
-        type: REMOVE_LAST_CITY
+        type: actions.REMOVE_LAST_CITY
     }
 }
 
-function createRemoveFirstCityAction() {
+export function createRemoveFirstCityAction() {
     return {
-        type: REMOVE_FIRST_CITY
+        type: actions.REMOVE_FIRST_CITY
     }
 }
 
-function createRemoveCityAction(cityName) {
+export function createRemoveCityAction(cityName) {
     return {
-        type: REMOVE_CITY,
+        type: actions.REMOVE_CITY,
         cityName: cityName
     }
 }
