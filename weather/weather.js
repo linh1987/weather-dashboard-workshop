@@ -143,7 +143,7 @@ var WeatherWidgetList = ({cities, actions, lastCity}) => {
     }</div>);
 }
 
-var render = (weatherData) => {
+export var render = (weatherData) => {
     Inferno.render(<WeatherWidgetList actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
         document.getElementById('weather-widget')
     );
