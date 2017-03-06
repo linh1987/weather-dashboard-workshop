@@ -1,3 +1,5 @@
+import {createStore, applyMiddleware} from 'redux';
+import ReduxThunk from 'redux-thunk';
 import * as actionCreators from './weather-action-creators.js';
 import * as actions from './weather-actions.js';
 
@@ -54,6 +56,7 @@ function weatherWidgetReducer(state = {
     }
 }
 
+
 function queryCityData(cityName) {
     return Promise.all([
         fetch(`http://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=46d6aa5f80a6f0228fe86c56173d740d`)
@@ -65,9 +68,8 @@ function queryCityData(cityName) {
     });
 }
 
-let thunk = window.ReduxThunk.default;
 
 // store
-export let weatherStore = Redux.createStore(weatherWidgetReducer,
-    Redux.applyMiddleware(thunk)
+export let weatherStore = createStore(weatherWidgetReducer,
+    applyMiddleware(ReduxThunk)
 );

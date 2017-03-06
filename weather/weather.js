@@ -1,3 +1,5 @@
+import Inferno from 'inferno';
+
 var Title = function (prop) {
     return (<div className='x_title'>
         <h2>
