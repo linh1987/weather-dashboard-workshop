@@ -5,7 +5,11 @@
   "main": "index.html",
   "scripts": {
     "build": "babel weather -d dist",
-    "build-webpack": "webpack"
+    "clean": "rimraf dist",
+    "copy": "copyfiles \"images/**\" \"vendors/**\" \"css/**\" dist",
+    "build-webpack": "npm run clean && webpack",
+    "build:dev": "npm run clean &&  webpack --env=webpack.dev --progress --profile --colors",
+    "build:production": "npm run clean &&  webpack --env=webpack.production --progress --profile --colors"
   },
   "repository": {
     "type": "git",
@@ -22,12 +26,15 @@
     "babel-loader": "^6.3.2",
     "babel-plugin-inferno": "1.3.0-beta17",
     "babel-preset-env": "1.1.4",
+    "copyfiles": "^1.2.0",
     "html-webpack-plugin": "^2.28.0",
     "inferno": "^1.3.0-rc.10",
     "inferno-create-element": "^1.3.0-rc.10",
     "redux": "^3.6.0",
     "redux-thunk": "^2.2.0",
     "replace-hash-webpack-plugin": "^1.4.12",
-    "webpack": "2.2.1"
+    "rimraf": "^2.6.1",
+    "webpack": "2.2.1",
+    "webpack-merge": "^4.0.0"
   }
 }
