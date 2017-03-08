@@ -137,10 +137,8 @@ var WeatherWidgetToolbar = ({actions, lastCity}) => {
 }
 
 var renderClock = function(showClock) {
-    console.log('showing clock: ' + showClock);
     if (showClock) {
         var Clock = require('./clock').default;
-        console.log('showing clock');
         return (<Clock />);
     }
     return (<div></div>);
