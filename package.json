@@ -4,12 +4,11 @@
   "description": "\"# weather-dashboard-workshop\"",
   "main": "index.html",
   "scripts": {
-    "build": "babel weather -d dist",
     "clean": "rimraf dist",
-    "copy": "copyfiles \"images/**\" \"vendors/**\" \"css/**\" dist",
-    "build-webpack": "npm run clean && webpack",
-    "build:dev": "npm run clean &&  webpack --env=webpack.dev --progress --profile --colors",
-    "build:production": "npm run clean &&  webpack --env=webpack.production --progress --profile --colors"
+    "copy": "copyfiles \"css/**\" dist",
+    "build": "npm run build:dev",
+    "build:dev": "npm run clean && npm run copy &&  webpack --env=webpack.dev --progress --profile --colors",
+    "build:production": "npm run clean && npm run copy &&  webpack --env=webpack.production --progress --profile --colors"
   },
   "repository": {
     "type": "git",
