@@ -130,23 +130,38 @@ var WeatherWidgetToolbar = ({actions, lastCity}) => {
             <button onClick={() => actions.addCity(lastCity)}>Add City</button>
             <button onClick={() => actions.removeCity(lastCity) }>Remove City</button>
             <button onClick={actions.removeLastCity}>Remove Last City</button>
+            <button onClick={actions.showClock}>Show Clock</button>
             <button>{lastCity}</button>
         </div>
     </div>);
 }
 
-var WeatherWidgetList = ({cities, actions, lastCity}) => {
+var renderClock = function(showClock) {
+    console.log('showing clock: ' + showClock);
+    if (showClock) {
+        var Clock = require('./clock').default;
+        console.log('showing clock');
+        return (<Clock />);
+    }
+    return (<div></div>);
+}
+
+var WeatherWidgetList = ({showClock, cities, actions, lastCity}) => {
     return (<div>
     <WeatherWidgetToolbar actions={actions} lastCity={lastCity} />
     {
         cities.filter((city) => !!city.data).map((city) => (
             <WeatherWidget data={city.data} time={city.time} forecast={city.forecast} />
         ))
-    }</div>);
+    }
+    {
+        renderClock(showClock)   
+    }
+    </div>);
 }
 
 export var render = (weatherData) => {
-    Inferno.render(<WeatherWidgetList actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
+    Inferno.render(<WeatherWidgetList showClock={weatherData.showClock} actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
         document.getElementById('weather-widget')
     );
 };

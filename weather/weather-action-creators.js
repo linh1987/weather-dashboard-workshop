@@ -46,3 +46,9 @@ export function createRemoveCityAction(cityName) {
         cityName: cityName
     }
 }
+
+export function createShowclockAction() {
+    return {
+        type: actions.SHOW_CLOCK
+    }
+}

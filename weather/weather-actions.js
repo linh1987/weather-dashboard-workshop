@@ -5,3 +5,4 @@ export const REMOVE_CITY = "REMOVE_CITY";
 export const REMOVE_FIRST_CITY  = "REMOVE_FIRST_CITY";
 export const UPDATE_CITY_DATA = "UPDATE_CITY_DATA";
 export const UPDATE_LAST_CITY = "UPDATE_LAST_CITY";
+export const SHOW_CLOCK = "SHOW_CLOCK";
