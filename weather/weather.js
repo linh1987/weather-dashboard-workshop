@@ -138,7 +138,6 @@ var WeatherWidgetToolbar = ({actions, lastCity}) => {
 
 var renderClock = function(showClock) {
     if (showClock) {
-        var Clock = require('./clock').default;
         return (<Clock />);
     }
     return (<div></div>);
@@ -158,9 +157,22 @@ var WeatherWidgetList = ({showClock, cities, actions, lastCity}) => {
     </div>);
 }
 
+
+var Clock;
+
 export var render = (weatherData) => {
-    Inferno.render(<WeatherWidgetList showClock={weatherData.showClock} actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
-        document.getElementById('weather-widget')
-    );
+    if(weatherData.showClock && !Clock){
+        import('./clock').then(ClockElement => {
+            Clock = ClockElement.default;
+
+            Inferno.render(<WeatherWidgetList showClock={weatherData.showClock} actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
+                document.getElementById('weather-widget')
+            );
+        });
+    } else {
+        Inferno.render(<WeatherWidgetList showClock={weatherData.showClock} actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
+            document.getElementById('weather-widget')
+        );
+    }
 };
 
