@@ -1,4 +1,4 @@
-import {createStore, applyMiddleware} from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import * as actionCreators from './weather-action-creators.js';
 import * as actions from './weather-actions.js';
@@ -6,13 +6,14 @@ import * as actions from './weather-actions.js';
 const dummyTime = "2017-01-09T05:10:19.367Z";
 
 export const addCityFunc = cityName => dispatch => {
-    queryCityData(cityName).then(({location, forecast}) => {
+    queryCityData(cityName).then(({ location, forecast }) => {
         dispatch(actionCreators.createAddCityAction(cityName, location, forecast, dummyTime))
     })
 }
 
 // reducer
 function weatherWidgetReducer(state = {
+    showClock: false,
     cities: [
     ],
     lastCity: 'Rome',
@@ -21,7 +22,8 @@ function weatherWidgetReducer(state = {
         removeFirstCity: () => { weatherStore.dispatch(actionCreators.createRemoveFirstCityAction()) },
         removeLastCity: () => { weatherStore.dispatch(actionCreators.createRemoveLastCityAction()) },
         removeCity: (cityName) => { weatherStore.dispatch(actionCreators.createRemoveCityAction(cityName)) },
-        updateLastCity: (cityName) => { weatherStore.dispatch(actionCreators.createUpdateLastCityAction(cityName)) }
+        updateLastCity: (cityName) => { weatherStore.dispatch(actionCreators.createUpdateLastCityAction(cityName)) },
+        showClock: () => { weatherStore.dispatch(actionCreators.createShowclockAction()) }
     }
 }, action) {
     const newState = state;
@@ -35,6 +37,9 @@ function weatherWidgetReducer(state = {
                 time: action.time
             });
             return newState;
+        case actions.SHOW_CLOCK:
+            newState.showClock = true;
+            return newState; 
         case actions.UPDATE_LAST_CITY:
             newState.lastCity = action.cityName;
             return newState;
