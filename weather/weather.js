@@ -1,5 +1,7 @@
 import Inferno from 'inferno';
 
+var Clock = null;
+
 var Title = function (prop) {
     return (<div className='x_title'>
         <h2>
@@ -137,8 +139,7 @@ var WeatherWidgetToolbar = ({actions, lastCity}) => {
 }
 
 var renderClock = function(showClock) {
-    if (showClock) {
-        var Clock = require('./clock').default;
+    if (showClock && Clock) {
         return (<Clock />);
     }
     return (<div></div>);
@@ -158,9 +159,22 @@ var WeatherWidgetList = ({showClock, cities, actions, lastCity}) => {
     </div>);
 }
 
-export var render = (weatherData) => {
+var internalRender = (weatherData) => {
     Inferno.render(<WeatherWidgetList showClock={weatherData.showClock} actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
-        document.getElementById('weather-widget')
-    );
+                document.getElementById('weather-widget')
+            );
+}
+
+export var render = (weatherData) => {
+    if (weatherData.showClock && !Clock) {
+        import('./clock').then((ClockComponent) => {
+            Clock = ClockComponent.default;
+
+            internalRender(weatherData);
+        })
+    }
+    else {
+        internalRender(weatherData);
+    }
 };
 
