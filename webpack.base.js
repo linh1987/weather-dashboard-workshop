@@ -15,6 +15,17 @@ module.exports = {
       {
         test: /\.js?$/,
         loader: "babel-loader"
+      },
+      {
+        test: /\.css$/,
+        use: [
+          { loader: "style-loader" },
+          { loader: "css-loader" },
+        ],
+      },
+      {
+        test: /\.(eot|svg|ttf|woff|woff2)$/,
+        loader: 'file-loader?name=fonts/[name].[ext]'
       }
     ],
   },
@@ -28,8 +39,8 @@ module.exports = {
 
   plugins: [
     new webpack.optimize.CommonsChunkPlugin({
-                name: 'vendor' // Specify the common bundle's name.
-            }),
+      name: 'vendor' // Specify the common bundle's name.
+    }),
     new HtmlWebpackPlugin({
       template: 'index.html',
       inject: true
