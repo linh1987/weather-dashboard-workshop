@@ -1,5 +1,6 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
+import clockImage from '../images/clock-128.png';
 
 export default class Clock extends Component {
     constructor() {
@@ -24,6 +25,11 @@ export default class Clock extends Component {
 
     render() {
         let time = new Date(this.state.time).toLocaleTimeString();
-        return (<span>{ time }</span>);
+        return (
+            <div>
+                <span>{ time }</span>
+                <img src={clockImage}/>
+            </div>
+        );
     }
 }

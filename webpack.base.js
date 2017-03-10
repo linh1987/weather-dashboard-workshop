@@ -2,6 +2,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: {
@@ -23,20 +24,22 @@ module.exports = {
         }]
       }, {
         test: /\.(css|scss)$/,
-        use: [
-          {
-            loader: 'style-loader'
-          },
-          {
-            loader: 'css-loader'
-          },
-          {
-            loader: 'sass-loader'
-          }
-        ]
+        use: ExtractTextPlugin.extract({
+          use: [
+            {
+              loader: 'css-loader'
+            },
+            {
+              loader: 'sass-loader'
+            }
+          ]
+        }),
       }, {
         test: /\.(eot|ttf|svg|woff|woff2)$/,
         use: 'file-loader?name=fonts/[name].[ext]'
+      }, {
+        test: /\.(png|jpg)$/,
+        use: 'file-loader?name=images/[name].[ext]'
       }
     ]
   },
@@ -55,6 +58,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'index.html',
       inject: true
-    })
+    }),
+    new ExtractTextPlugin('styles.[hash].css')
   ]
 };

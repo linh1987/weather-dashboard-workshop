@@ -1,4 +1,6 @@
 import Inferno from 'inferno';
+import '../css/bootstrap.min.css';
+import '../css/custom.min.css';
 
 var Title = function (prop) {
     return (<div className='x_title'>
