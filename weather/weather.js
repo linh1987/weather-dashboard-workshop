@@ -1,4 +1,6 @@
 import Inferno from 'inferno';
+import '../css/bootstrap.min.css';
+import '../css/custom.min.css';
 
 var Clock = null;
 
@@ -172,8 +174,7 @@ export var render = (weatherData) => {
 
             internalRender(weatherData);
         })
-    }
-    else {
+    } else {
         internalRender(weatherData);
     }
 };
