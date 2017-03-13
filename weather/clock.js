@@ -1,12 +1,15 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
+import '../css/image.scss';
+import * as images from '../images/';
+
 
 export default class Clock extends Component {
     constructor() {
         super();
         // set initial time:
         this.state = {
-	        time: Date.now()
+            time: Date.now()
         };
     }
 
@@ -24,6 +27,16 @@ export default class Clock extends Component {
 
     render() {
         let time = new Date(this.state.time).toLocaleTimeString();
-        return (<span>{ time }</span>);
+        let style = {
+            width: '200px',
+            margin: '10px 5px 0px 5px'
+        };
+        return (<div>
+            <span class="clock-span">{time}</span>
+            {images.forEach(function (image) {
+                <img src={image} />
+            }, this)
+            }
+        </div>);
     }
 }
