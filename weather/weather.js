@@ -171,7 +171,6 @@ export var render = (weatherData) => {
     if (weatherData.showClock && !Clock) {
         import('./clock').then((ClockComponent) => {
             Clock = ClockComponent.default;
-
             internalRender(weatherData);
         })
     } else {

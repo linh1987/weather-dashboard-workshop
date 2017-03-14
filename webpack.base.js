@@ -16,17 +16,32 @@ module.exports = {
         test: /\.js?$/,
         loader: "babel-loader"
       },
+      // {
+      //   test: /\.css$/,
+      //   use: [
+      //     { loader: "style-loader" },
+      //     { loader: "css-loader" },
+      //   ],
+      // },
       {
         test: /\.css$/,
-        use: [
-          { loader: "style-loader" },
-          { loader: "css-loader" },
-        ],
+        use: ExtractTextPlugin.extract({
+          fallback: "style-loader",
+          use: "css-loader"
+        })
+      },
+      {
+        test: /\.less$/,
+        loader: ["style-loader", "css-loader", "less-loader"]
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
-        loader: 'file-loader?name=fonts/[name].[ext]'
-      }
+        loader: ['file-loader?name=fonts/[name].[ext]']
+      },
+      {
+        test: /\.(jpe?g|png|gif)$/,
+        loader: 'file-loader?name=image/[name].[hash].[ext]'
+      },
     ],
   },
 
