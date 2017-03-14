@@ -3,6 +3,8 @@ var path = require('path');
 var webpack = require('webpack');
 var ReplaceHashWebpackPlugin = require('replace-hash-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
+
 
 module.exports = {
   entry: {
@@ -18,10 +20,9 @@ module.exports = {
       },
       {
         test: /\.css$/,
-        use: [
-          { loader: "style-loader" },
-          { loader: "css-loader" },
-        ],
+        use: ExtractTextPlugin.extract({
+          use: "css-loader",
+        }),
       },
       {
         test: /\.(eot|svg|ttf|woff|woff2)$/,
@@ -41,6 +42,7 @@ module.exports = {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor' // Specify the common bundle's name.
     }),
+    new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({
       template: 'index.html',
       inject: true
