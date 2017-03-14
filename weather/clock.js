@@ -1,5 +1,6 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
+import '../css/clock.scss';
 import clockImage from '../images/clock-128.png';
 
 export default class Clock extends Component {
