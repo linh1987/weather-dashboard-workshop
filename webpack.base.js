@@ -1,10 +1,8 @@
 
 var path = require('path');
 var webpack = require('webpack');
-var ReplaceHashWebpackPlugin = require('replace-hash-webpack-plugin');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var ExtractTextPlugin = require('extract-text-webpack-plugin');
-
 
 module.exports = {
   entry: {
@@ -15,20 +13,36 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js?$/,
-        loader: "babel-loader"
-      },
-      {
-        test: /\.css$/,
+        test: /\.js$/,
+        exclude: /(node_modules)/,
+        use: [{
+          loader: 'babel-loader',
+          options: {
+            presets: [['es2015', {modules: false}]],
+            plugins: ['syntax-dynamic-import']
+          }
+        }]
+      }, {
+        test: /\.(css|scss)$/,
         use: ExtractTextPlugin.extract({
-          use: "css-loader",
+          fallback: 'style-loader',
+          use: [
+            {
+              loader: 'css-loader'
+            },
+            {
+              loader: 'sass-loader'
+            }
+          ]
         }),
-      },
-      {
-        test: /\.(eot|svg|ttf|woff|woff2)$/,
-        loader: 'file-loader?name=fonts/[name].[ext]'
+      }, {
+        test: /\.(eot|ttf|svg|woff|woff2)$/,
+        use: 'file-loader?name=fonts/[name].[ext]'
+      }, {
+        test: /\.(png|jpg)$/,
+        use: 'file-loader?name=images/[name].[ext]'
       }
-    ],
+    ]
   },
 
   devtool: 'source-map',
@@ -46,6 +60,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'index.html',
       inject: true
-    })
+    }),
+    new ExtractTextPlugin('styles.[hash].css')
   ]
 };

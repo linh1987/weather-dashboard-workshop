@@ -1,4 +1,4 @@
 {
   "presets": ["env"],
-  "plugins": ["inferno", "syntax-dynamic-import"]
+  "plugins": ["inferno"]
 }
