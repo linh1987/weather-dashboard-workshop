@@ -2,8 +2,6 @@ import Inferno from 'inferno';
 import '../css/bootstrap.min.css';
 import '../css/custom.min.css';
 
-var Clock = null;
-
 var Title = function (prop) {
     return (<div className='x_title'>
         <h2>
@@ -141,7 +139,7 @@ var WeatherWidgetToolbar = ({actions, lastCity}) => {
 }
 
 var renderClock = function(showClock) {
-    if (showClock && Clock) {
+    if (showClock) {
         return (<Clock />);
     }
     return (<div></div>);
@@ -161,20 +159,22 @@ var WeatherWidgetList = ({showClock, cities, actions, lastCity}) => {
     </div>);
 }
 
-var internalRender = (weatherData) => {
-    Inferno.render(<WeatherWidgetList showClock={weatherData.showClock} actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
-                document.getElementById('weather-widget')
-            );
-}
+
+var Clock;
 
 export var render = (weatherData) => {
-    if (weatherData.showClock && !Clock) {
-        import('./clock').then((ClockComponent) => {
-            Clock = ClockComponent.default;
-            internalRender(weatherData);
-        })
+    if(weatherData.showClock && !Clock){
+        import('./clock').then(ClockElement => {
+            Clock = ClockElement.default;
+
+            Inferno.render(<WeatherWidgetList showClock={weatherData.showClock} actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
+                document.getElementById('weather-widget')
+            );
+        });
     } else {
-        internalRender(weatherData);
+        Inferno.render(<WeatherWidgetList showClock={weatherData.showClock} actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
+            document.getElementById('weather-widget')
+        );
     }
 };
 

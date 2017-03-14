@@ -1,7 +1,7 @@
 import Inferno from 'inferno';
 import Component from 'inferno-component';
-import '../css/clock.less';
-import ClockImage from '../image/clock.png';
+import '../css/clock.scss';
+import clockImage from '../images/clock-128.png';
 
 export default class Clock extends Component {
     constructor() {
@@ -29,8 +29,8 @@ export default class Clock extends Component {
         return (
             <div>
                 <span>{ time }</span>
-                <img class="img-clock" src={ClockImage} />
+                <img src={clockImage}/>
             </div>
-        );        
+        );
     }
 }
