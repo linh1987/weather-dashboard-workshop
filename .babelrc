@@ -1,4 +1,3 @@
 {
-  "presets": ["env"],
-  "plugins": ["inferno"]
+  "presets": ["env","react"]
 }
