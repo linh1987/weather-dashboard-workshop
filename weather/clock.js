@@ -33,10 +33,7 @@ export default class Clock extends Component {
         };
         return (<div>
             <span class="clock-span">{time}</span>
-            {images.forEach(function (image) {
                 <img src={image} />
-            }, this)
-            }
         </div>);
     }
 }

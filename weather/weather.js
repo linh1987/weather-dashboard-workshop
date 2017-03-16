@@ -1,7 +1,6 @@
 import Inferno from 'inferno';
 import '../css/bootstrap.min.css';
 import '../css/custom.min.css';
-
 var Clock = null;
 
 var Title = function (prop) {
@@ -142,7 +141,6 @@ var WeatherWidgetToolbar = ({actions, lastCity}) => {
 
 var renderClock = function(showClock) {
     if (showClock) {
-        
         return (<Clock />);
     }
     return (<div></div>);

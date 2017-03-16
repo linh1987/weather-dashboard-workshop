@@ -4,6 +4,7 @@
   "description": "\"# weather-dashboard-workshop\"",
   "main": "index.html",
   "scripts": {
+    "start": "npm run clean && npm run copy && webpack-dev-server --open --env=webpack.dev --progress --profile --colors",
     "clean": "rimraf dist",
     "copy": "copyfiles \"css/**\" dist",
     "build": "npm run build:dev",
@@ -45,6 +46,7 @@
     "sass-loader": "^6.0.3",
     "style-loader": "^0.13.2",
     "webpack": "2.2.1",
+    "webpack-dev-server": "^2.4.1",
     "webpack-merge": "^4.0.0"
   }
 }
