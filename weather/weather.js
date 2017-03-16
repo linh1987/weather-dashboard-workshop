@@ -1,6 +1,7 @@
-import Inferno from 'inferno';
-
-var Clock = null;
+import React from 'react';
+import ReactDom from 'react-dom';
+import '../css/bootstrap.min.css';
+import '../css/custom.min.css';
 
 var Title = function (prop) {
     return (<div className='x_title'>
@@ -16,12 +17,12 @@ var Title = function (prop) {
                     className='dropdown-toggle'
                     data-toggle='dropdown'
                     role='button'
-                    area-expanded='false'>
+                    data-area-expanded='false'>
                     <i className="fa fa-wrench" />
                 </a>
                 <ul className="dropdown-menu" role="menu">
                     {
-                        [1, 2, 3].map(() => <li>test</li>)
+                        [1, 2, 3].map((value, index) => <li key={index}>test</li>)
                     }
                 </ul>
             </li>
@@ -78,10 +79,10 @@ var WeatherDegree = function ({data}) {
 
 var ForecastDay = ({dayforecast}) => {
     return (
-        <div class="col-sm-2">
-            <div class="daily-weather">
-                <h2 class="day">Mon</h2>
-                <h3 class="degrees">25</h3>
+        <div className="col-sm-2">
+            <div className="daily-weather">
+                <h2 className="day">Mon</h2>
+                <h3 className="degrees">25</h3>
                 <canvas id="clear-day" width="32" height="32"></canvas>
                 <h5>15 <i>km/h</i></h5>
             </div>
@@ -107,7 +108,7 @@ var Body = (props) => {
             </div>
             <div className='row weather-days'>
                 {
-                    props.forecast.list.map((dayData) => (<ForecastDay dayforecast={dayData} />))
+                    props.forecast.list.map((dayData, index) => (<ForecastDay key={index} dayforecast={dayData} />))
                 }
             </div>
         </div>
@@ -128,7 +129,7 @@ var WeatherWidgetToolbar = ({actions, lastCity}) => {
     return (<div className="row">
         <div className="col-xs-12">
             <label>City Name</label>
-            <input onInput={(e) => actions.updateLastCity(e.target.value)} type="text" value={lastCity} />
+            <input onInput={(e) => actions.updateLastCity(e.target.value)} type="text" defaultValue={lastCity} />
             <button onClick={() => actions.addCity(lastCity)}>Add City</button>
             <button onClick={() => actions.removeCity(lastCity) }>Remove City</button>
             <button onClick={actions.removeLastCity}>Remove Last City</button>
@@ -139,7 +140,7 @@ var WeatherWidgetToolbar = ({actions, lastCity}) => {
 }
 
 var renderClock = function(showClock) {
-    if (showClock && Clock) {
+    if (showClock) {
         return (<Clock />);
     }
     return (<div></div>);
@@ -149,8 +150,8 @@ var WeatherWidgetList = ({showClock, cities, actions, lastCity}) => {
     return (<div>
     <WeatherWidgetToolbar actions={actions} lastCity={lastCity} />
     {
-        cities.filter((city) => !!city.data).map((city) => (
-            <WeatherWidget data={city.data} time={city.time} forecast={city.forecast} />
+        cities.filter((city) => !!city.data).map((city,index) => (
+            <WeatherWidget key={index} data={city.data} time={city.time} forecast={city.forecast} />
         ))
     }
     {
@@ -159,22 +160,22 @@ var WeatherWidgetList = ({showClock, cities, actions, lastCity}) => {
     </div>);
 }
 
-var internalRender = (weatherData) => {
-    Inferno.render(<WeatherWidgetList showClock={weatherData.showClock} actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
-                document.getElementById('weather-widget')
-            );
-}
+
+var Clock;
 
 export var render = (weatherData) => {
-    if (weatherData.showClock && !Clock) {
-        import('./clock').then((ClockComponent) => {
-            Clock = ClockComponent.default;
+    // if(weatherData.showClock && !Clock){
+    //     import('./clock').then(ClockElement => {
+    //         Clock = ClockElement.default;
 
-            internalRender(weatherData);
-        })
-    }
-    else {
-        internalRender(weatherData);
-    }
+    //         React.render(<WeatherWidgetList showClock={weatherData.showClock} actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
+    //             document.getElementById('weather-widget')
+    //         );
+    //     });
+    // } else {
+        ReactDom.render(<WeatherWidgetList showClock={weatherData.showClock} actions={weatherData.actions} lastCity={weatherData.lastCity} cities={weatherData.cities} />,
+            document.getElementById('weather-widget')
+        );
+    //}
 };
 
