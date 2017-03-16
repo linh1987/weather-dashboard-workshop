@@ -7,7 +7,7 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin');
 module.exports = {
   entry: {
     'main': './weather/app.js',
-    'vendor': ['inferno', 'redux', 'redux-thunk']
+    'vendor': ['react', 'redux', 'redux-thunk']
   },
 
   module: {
